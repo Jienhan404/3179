@@ -1,0 +1,99 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "National undergraduate satisfaction by focus area, 2017-2025 (annotated multi-line chart).",
+  "width": "container",
+  "height": 400,
+  "data": {"url": "data/trend_ug.csv"},
+  "transform": [
+    {
+      "calculate": "{'Skills Development': 'Skills development', 'Peer Engagement': 'Engaging with other students', 'Teaching Quality and Engagement': 'Teaching quality', 'Student Support and Services': 'Student support', 'Learning Resources': 'Learning resources', 'Overall Educational Experience': 'Overall experience'}[datum.focus_area]",
+      "as": "area"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "quantitative",
+      "scale": {"domain": [2017, 2031], "nice": false},
+      "axis": {"format": "d", "title": null, "values": [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "grid": false}
+    },
+    "y": {
+      "field": "pct_positive",
+      "type": "quantitative",
+      "scale": {"domain": [40, 90]},
+      "axis": {"title": "% of students who rated it positively", "tickCount": 5}
+    },
+    "color": {
+      "field": "area",
+      "type": "nominal",
+      "scale": {
+        "domain": ["Learning resources", "Skills development", "Teaching quality", "Overall experience", "Student support", "Engaging with other students"],
+        "range": ["#2a78d6", "#1baf7a", "#eda100", "#0b0b0b", "#e87ba4", "#eb6834"]
+      },
+      "legend": null
+    }
+  },
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {"year": 2020, "label": ["COVID-19:", "classes move online"]},
+          {"year": 2023, "label": ["Survey questions", "reworded"]}
+        ]
+      },
+      "layer": [
+        {
+          "mark": {"type": "rule", "strokeDash": [3, 3], "color": "#8a8983"},
+          "encoding": {"x": {"field": "year", "type": "quantitative"}, "y": {"value": 0}, "y2": {"value": 400}, "color": {"value": "#8a8983"}}
+        },
+        {
+          "mark": {"type": "text", "align": "left", "dx": 5, "baseline": "top", "fontSize": 11, "lineHeight": 13},
+          "encoding": {
+            "x": {"field": "year", "type": "quantitative"},
+            "y": {"value": 4},
+            "text": {"field": "label"},
+            "color": {"value": "#52514e"}
+          }
+        }
+      ]
+    },
+    {
+      "mark": {"type": "line", "interpolate": "monotone"},
+      "encoding": {
+        "strokeWidth": {"condition": {"test": "datum.area == 'Overall experience'", "value": 3.5}, "value": 2}
+      }
+    },
+    {
+      "params": [
+        {
+          "name": "hover_point",
+          "select": {"type": "point", "fields": ["year", "area"], "nearest": true, "on": "pointerover", "clear": "pointerout"}
+        }
+      ],
+      "mark": {"type": "point", "filled": true, "stroke": "white", "strokeWidth": 1.5},
+      "encoding": {
+        "size": {"condition": {"param": "hover_point", "empty": false, "value": 110}, "value": 30},
+        "tooltip": [
+          {"field": "area", "title": "Area"},
+          {"field": "year", "title": "Year"},
+          {"field": "pct_positive", "title": "% positive", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"filter": "datum.year == 2025"},
+        {
+          "calculate": "{'Learning resources': 85.4, 'Skills development': 82.4, 'Teaching quality': 79.4, 'Overall experience': 76.2, 'Student support': 71.3, 'Engaging with other students': 61.4}[datum.area]",
+          "as": "label_y"
+        },
+        {"calculate": "datum.area + '  ' + format(datum.pct_positive, '.0f') + '%'", "as": "label"}
+      ],
+      "mark": {"type": "text", "align": "left", "dx": 10, "fontSize": 12, "fontWeight": 600},
+      "encoding": {
+        "y": {"field": "label_y", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Flow map: Malaysian higher-education students travelling from Kuala Lumpur to each Australian state, 2025.",
+  "width": "container",
+  "height": 470,
+  "projection": {"type": "mercator"},
+  "layer": [
+    {
+      "data": {"url": "data/region_countries.geojson", "format": {"type": "json", "property": "features"}},
+      "transform": [
+        {
+          "filter": {
+            "field": "properties.name",
+            "oneOf": ["Malaysia", "Indonesia", "Australia", "Papua New Guinea", "Thailand", "Vietnam", "Cambodia", "Philippines", "Brunei", "Timor-Leste"]
+          }
+        }
+      ],
+      "mark": {"type": "geoshape", "stroke": "#ffffff", "strokeWidth": 0.6},
+      "encoding": {
+        "color": {
+          "condition": {"test": "datum.properties.name == 'Malaysia'", "value": "#b7d3f6"},
+          "value": "#e9e7e1"
+        }
+      }
+    },
+    {
+      "data": {"url": "data/australia_states.geojson", "format": {"type": "json", "property": "features"}},
+      "mark": {"type": "geoshape", "fill": "#dddbd3", "stroke": "#ffffff", "strokeWidth": 1}
+    },
+    {
+      "data": {"url": "data/malaysia_he_by_state_2025.csv"},
+      "transform": [
+        {
+          "lookup": "state",
+          "from": {"data": {"url": "data/state_capitals.csv"}, "key": "state", "fields": ["capital", "lat", "lon"]}
+        },
+        {"calculate": "3.139", "as": "origin_lat"},
+        {"calculate": "101.687", "as": "origin_lon"},
+        {"joinaggregate": [{"op": "sum", "field": "enrolments", "as": "total"}]},
+        {"calculate": "datum.enrolments / datum.total", "as": "share"}
+      ],
+      "layer": [
+        {
+          "mark": {"type": "rule", "color": "#2a78d6", "opacity": 0.55, "strokeCap": "round"},
+          "encoding": {
+            "longitude": {"field": "origin_lon", "type": "quantitative"},
+            "latitude": {"field": "origin_lat", "type": "quantitative"},
+            "longitude2": {"field": "lon"},
+            "latitude2": {"field": "lat"},
+            "strokeWidth": {
+              "field": "enrolments",
+              "type": "quantitative",
+              "scale": {"domain": [0, 4400], "range": [0.6, 16]},
+              "legend": null
+            }
+          }
+        },
+        {
+          "mark": {"type": "circle", "color": "#1c5cab", "stroke": "#ffffff", "strokeWidth": 1.5, "opacity": 0.95},
+          "encoding": {
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "size": {
+              "field": "enrolments",
+              "type": "quantitative",
+              "scale": {"domain": [0, 4400], "range": [25, 900]},
+              "legend": null
+            },
+            "tooltip": [
+              {"field": "state", "title": "State"},
+              {"field": "capital", "title": "Capital city"},
+              {"field": "enrolments", "title": "Malaysian students", "format": ","},
+              {"field": "share", "title": "Share of all Malaysians", "format": ".0%"}
+            ]
+          }
+        },
+        {
+          "transform": [
+            {"calculate": "datum.capital + ', ' + datum.state + ' · ' + format(datum.enrolments, ',')", "as": "label"}
+          ],
+          "mark": {
+            "type": "text",
+            "fontSize": 12,
+            "color": "#0b0b0b",
+            "align": {"expr": "indexof(['WA', 'SA'], datum.state) >= 0 ? 'right' : 'left'"},
+            "dx": {"expr": "indexof(['WA', 'SA'], datum.state) >= 0 ? -12 : datum.state == 'VIC' ? 24 : datum.state == 'NSW' ? 16 : 10"},
+            "dy": {"expr": "datum.state == 'NSW' ? -8 : datum.state == 'ACT' ? 8 : datum.state == 'NT' ? -14 : datum.state == 'VIC' ? 20 : datum.state == 'SA' ? 18 : datum.state == 'TAS' ? 12 : datum.state == 'WA' ? 16 : 0"}
+          },
+          "encoding": {
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "text": {"field": "label"}
+          }
+        }
+      ]
+    },
+    {
+      "data": {"values": [{"city": "Kuala Lumpur", "lat": 3.139, "lon": 101.687}]},
+      "layer": [
+        {
+          "mark": {"type": "circle", "size": 90, "color": "#0b0b0b", "stroke": "#ffffff", "strokeWidth": 2},
+          "encoding": {
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"}
+          }
+        },
+        {
+          "mark": {"type": "text", "dy": -14, "fontSize": 12.5, "fontWeight": "bold", "color": "#0b0b0b"},
+          "encoding": {
+            "longitude": {"field": "lon", "type": "quantitative"},
+            "latitude": {"field": "lat", "type": "quantitative"},
+            "text": {"field": "city"}
+          }
+        }
+      ]
+    }
+  ]
+}

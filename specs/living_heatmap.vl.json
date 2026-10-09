@@ -1,0 +1,82 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Heatmap: satisfaction with nine aspects of living in Australia, by international students' home country, with Malaysia emphasised.",
+  "width": "container",
+  "height": {"step": 25},
+  "data": {"url": "data/intl_living_by_country_ug.csv"},
+  "transform": [
+    {
+      "calculate": "datum.country == 'China (excludes SARs and Taiwan)' ? 'China' : datum.country == 'Hong Kong (SAR of China)' ? 'Hong Kong' : datum.country == 'Korea, Republic of (South)' ? 'South Korea' : datum.country == 'Total international' ? 'All international students' : datum.country",
+      "as": "home"
+    },
+    {
+      "calculate": "{'Overall living experience': 'Living|overall', 'Personal safety on campus': 'Safety on|campus', 'Personal safety off campus': 'Safety off|campus', 'Improving English skills': 'Improving|English', 'Overall student accommodation experience': 'Student|housing', 'Making friends': 'Making|friends', 'Transport': 'Public|transport', 'Employment while studying': 'Part-time|work', 'Work experience': 'Work|experience'}[datum.aspect]",
+      "as": "topic"
+    },
+    {"calculate": "datum.aspect == 'Overall living experience' ? datum.pct_positive : null", "as": "overall_value"},
+    {"joinaggregate": [{"op": "max", "field": "overall_value", "as": "overall_score"}], "groupby": ["home"]}
+  ],
+  "encoding": {
+    "y": {
+      "field": "home",
+      "type": "nominal",
+      "sort": {"field": "overall_score", "op": "max", "order": "descending"},
+      "axis": {
+        "title": null,
+        "ticks": false,
+        "domain": false,
+        "labelLimit": 200,
+        "labelFontSize": 12,
+        "labelFontWeight": {"condition": {"test": "datum.value == 'Malaysia'", "value": "bold"}, "value": "normal"},
+        "labelColor": {"condition": {"test": "datum.value == 'Malaysia'", "value": "#0b0b0b"}, "value": "#52514e"}
+      }
+    },
+    "x": {
+      "field": "topic",
+      "type": "nominal",
+      "sort": ["Living|overall", "Safety on|campus", "Improving|English", "Safety off|campus", "Student|housing", "Making|friends", "Public|transport", "Part-time|work", "Work|experience"],
+      "axis": {
+        "title": null,
+        "orient": "top",
+        "ticks": false,
+        "domain": false,
+        "labelAngle": 0,
+        "labelFontSize": 10.5,
+        "labelFontWeight": 600,
+        "labelLimit": 110,
+        "labelPadding": 20,
+        "labelExpr": "split(datum.label, '|')",
+        "labelLineHeight": 13
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "rect", "stroke": "#ffffff", "strokeWidth": 2},
+      "encoding": {
+        "color": {
+          "field": "pct_positive",
+          "type": "quantitative",
+          "scale": {"domain": [60, 100], "range": ["#eef4fd", "#86b6ef", "#2a78d6", "#0d366b"], "clamp": true},
+          "legend": {"title": "% positive", "orient": "bottom", "direction": "horizontal", "gradientLength": 180}
+        },
+        "tooltip": [
+          {"field": "home", "title": "Home country"},
+          {"field": "aspect", "title": "Aspect of living in Australia"},
+          {"field": "pct_positive", "title": "% positive", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "fontSize": 11.5},
+      "encoding": {
+        "text": {"field": "pct_positive", "format": ".0f"},
+        "color": {"condition": {"test": "datum.pct_positive >= 84", "value": "#ffffff"}, "value": "#0b0b0b"}
+      }
+    },
+    {
+      "transform": [{"filter": "datum.home == 'Malaysia'"}],
+      "mark": {"type": "rect", "fill": null, "stroke": "#eb6834", "strokeWidth": 2.5}
+    }
+  ]
+}

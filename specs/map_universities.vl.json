@@ -1,0 +1,93 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Proportional symbol map: every Australian university, sized by undergraduates surveyed and coloured by the chosen satisfaction score, 2025.",
+  "width": "container",
+  "height": 500,
+  "projection": {"type": "conicEqualArea", "parallels": [-18, -36], "rotate": [-133, 0]},
+  "params": [
+    {
+      "name": "uni_measure",
+      "value": "overall",
+      "bind": {
+        "input": "select",
+        "name": "Colour the circles by: ",
+        "options": ["overall", "teaching", "support", "resources", "skills", "peer"],
+        "labels": ["Overall experience", "Teaching quality", "Student support", "Learning resources", "Skills development", "Engaging with other students"]
+      }
+    },
+    {
+      "name": "min_size",
+      "value": 0,
+      "bind": {"input": "range", "min": 0, "max": 15000, "step": 1000, "name": "Hide universities with fewer undergraduates than: "}
+    }
+  ],
+  "layer": [
+    {
+      "data": {"url": "data/australia_states.geojson", "format": {"type": "json", "property": "features"}},
+      "mark": {"type": "geoshape", "fill": "#eceae4", "stroke": "#ffffff", "strokeWidth": 1.2}
+    },
+    {
+      "data": {"url": "data/uni_ug_2025.csv"},
+      "transform": [
+        {"filter": "datum.ug_population >= min_size"},
+        {"calculate": "datum[uni_measure]", "as": "value"}
+      ],
+      "mark": {"type": "circle", "stroke": "#ffffff", "strokeWidth": 1.2, "opacity": 0.9},
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "order": {"field": "ug_population", "sort": "descending"},
+        "size": {
+          "field": "ug_population",
+          "type": "quantitative",
+          "scale": {"domain": [0, 28000], "range": [20, 900]},
+          "legend": {"title": "Undergraduates surveyed", "values": [2000, 10000, 25000], "format": ",d", "orient": "bottom-left", "symbolFillColor": "#c9c7c0", "symbolStrokeColor": "#8a8983"}
+        },
+        "color": {
+          "field": "value",
+          "type": "quantitative",
+          "scale": {"range": ["#cde2fb", "#86b6ef", "#3987e5", "#1c5cab", "#0d366b"], "zero": false, "nice": true},
+          "legend": {"title": "% positive", "orient": "bottom-left", "direction": "vertical", "gradientLength": 90}
+        },
+        "tooltip": [
+          {"field": "university", "title": "University"},
+          {"field": "state", "title": "State"},
+          {"field": "ug_population", "title": "Undergraduates surveyed", "format": ","},
+          {"field": "overall", "title": "Overall experience (%)"},
+          {"field": "teaching", "title": "Teaching quality (%)"},
+          {"field": "support", "title": "Student support (%)"},
+          {"field": "resources", "title": "Learning resources (%)"},
+          {"field": "skills", "title": "Skills development (%)"},
+          {"field": "peer", "title": "Engaging with other students (%)"},
+          {"field": "intl_pct", "title": "International students (%)"}
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {"city": "Sydney", "lat": -33.87, "lon": 151.21, "dx": 26, "align": "left"},
+          {"city": "Melbourne", "lat": -37.81, "lon": 144.96, "dx": -30, "align": "right"},
+          {"city": "Brisbane", "lat": -27.47, "lon": 153.03, "dx": 22, "align": "left"},
+          {"city": "Perth", "lat": -31.95, "lon": 115.86, "dx": 18, "align": "left"},
+          {"city": "Adelaide", "lat": -34.93, "lon": 138.6, "dx": -22, "align": "right"},
+          {"city": "Hobart", "lat": -42.88, "lon": 147.33, "dx": 14, "align": "left"},
+          {"city": "Canberra", "lat": -35.28, "lon": 149.13, "dx": -16, "align": "right"},
+          {"city": "Darwin", "lat": -12.46, "lon": 130.84, "dx": 12, "align": "left"}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 11.5,
+        "color": "#52514e",
+        "dx": {"expr": "datum.dx"},
+        "align": {"expr": "datum.align"}
+      },
+      "encoding": {
+        "longitude": {"field": "lon", "type": "quantitative"},
+        "latitude": {"field": "lat", "type": "quantitative"},
+        "text": {"field": "city"}
+      }
+    }
+  ]
+}

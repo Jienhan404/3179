@@ -1,0 +1,48 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Top 10 nationalities of international higher-education students in Australia, 2025, with Malaysia highlighted.",
+  "width": "container",
+  "height": {"step": 26},
+  "data": {"url": "data/top10_nationalities_by_state_2025.csv"},
+  "transform": [
+    {"aggregate": [{"op": "sum", "field": "enrolments", "as": "students"}], "groupby": ["nationality"]}
+  ],
+  "encoding": {
+    "y": {
+      "field": "nationality",
+      "type": "nominal",
+      "sort": {"field": "students", "op": "max", "order": "descending"},
+      "axis": {
+        "title": null,
+        "ticks": false,
+        "domain": false,
+        "labelFontWeight": {"condition": {"test": "datum.value == 'Malaysia'", "value": "bold"}, "value": "normal"}
+      }
+    },
+    "x": {
+      "field": "students",
+      "type": "quantitative",
+      "scale": {"domain": [0, 190000]},
+      "axis": {"title": "Students enrolled in Australian higher education", "format": "~s", "tickCount": 5}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 4, "height": 16},
+      "encoding": {
+        "color": {
+          "condition": {"test": "datum.nationality == 'Malaysia'", "value": "#2a78d6"},
+          "value": "#c9c7c0"
+        },
+        "tooltip": [
+          {"field": "nationality", "title": "Home country"},
+          {"field": "students", "title": "Students", "format": ","}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "align": "left", "dx": 6, "fontSize": 11.5, "color": "#52514e"},
+      "encoding": {"text": {"field": "students", "format": ","}}
+    }
+  ]
+}

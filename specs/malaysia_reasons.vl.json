@@ -1,0 +1,64 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Dumbbell chart: reasons for choosing Australia, Malaysian students compared with all international students.",
+  "width": "container",
+  "height": {"step": 34},
+  "data": {"url": "data/intl_reasons_by_country_ug.csv"},
+  "transform": [
+    {"filter": {"field": "country", "oneOf": ["Malaysia", "Total international"]}},
+    {
+      "calculate": "indexof(datum.reason, 'Reputation') >= 0 ? 'Reputation of Australian education' : indexof(datum.reason, 'safety') >= 0 ? 'Personal safety' : indexof(datum.reason, 'part-time') >= 0 ? 'Being able to work part-time' : indexof(datum.reason, 'English') >= 0 ? 'Studying in an English-speaking country' : indexof(datum.reason, 'friends') >= 0 ? 'Friends or family already in Australia' : indexof(datum.reason, 'culture') >= 0 ? 'Experiencing a new culture' : indexof(datum.reason, 'migrating') >= 0 ? 'Chance of migrating to Australia' : indexof(datum.reason, 'Weather') >= 0 ? 'Weather' : datum.reason",
+      "as": "reason_short"
+    },
+    {"calculate": "datum.country == 'Malaysia' ? 'Malaysian students' : 'All international students'", "as": "who"},
+    {"calculate": "datum.country == 'Malaysia' ? datum.pct_important : null", "as": "malaysia_value"},
+    {"joinaggregate": [{"op": "max", "field": "malaysia_value", "as": "malaysia_score"}], "groupby": ["reason_short"]}
+  ],
+  "encoding": {
+    "y": {
+      "field": "reason_short",
+      "type": "nominal",
+      "sort": {"field": "malaysia_score", "op": "max", "order": "descending"},
+      "axis": {"title": null, "ticks": false, "domain": false, "labelLimit": 270, "labelFontSize": 12, "grid": true}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "rule", "color": "#b5b3ab", "strokeWidth": 4, "strokeCap": "round"},
+      "encoding": {
+        "x": {"aggregate": "min", "field": "pct_important", "type": "quantitative", "scale": {"domain": [40, 100]}},
+        "x2": {"aggregate": "max", "field": "pct_important"}
+      }
+    },
+    {
+      "mark": {"type": "circle", "size": 170, "opacity": 1, "stroke": "#ffffff", "strokeWidth": 2},
+      "encoding": {
+        "x": {
+          "field": "pct_important",
+          "type": "quantitative",
+          "scale": {"domain": [40, 100]},
+          "axis": {"title": "% of students who said this was important", "tickCount": 6}
+        },
+        "color": {
+          "field": "who",
+          "type": "nominal",
+          "scale": {"domain": ["Malaysian students", "All international students"], "range": ["#2a78d6", "#8a8983"]},
+          "legend": {"title": null, "orient": "top", "direction": "horizontal", "symbolType": "circle", "labelFontSize": 12.5}
+        },
+        "tooltip": [
+          {"field": "who", "title": "Group"},
+          {"field": "reason_short", "title": "Reason"},
+          {"field": "pct_important", "title": "% who said important", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.country == 'Malaysia'"}],
+      "mark": {"type": "text", "dy": -15, "fontSize": 11.5, "fontWeight": "bold", "color": "#0b0b0b"},
+      "encoding": {
+        "x": {"field": "pct_important", "type": "quantitative"},
+        "text": {"field": "pct_important", "format": ".0f"}
+      }
+    }
+  ]
+}

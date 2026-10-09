@@ -1,0 +1,86 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Malaysian higher-education students in Australia, 2005-2025 (annotated area chart).",
+  "width": "container",
+  "height": 300,
+  "data": {"url": "data/malaysia_he_trend.csv"},
+  "layer": [
+    {
+      "mark": {"type": "area", "color": "#2a78d6", "opacity": 0.15}
+    },
+    {
+      "mark": {"type": "line", "color": "#2a78d6", "strokeWidth": 2.5}
+    },
+    {
+      "params": [
+        {
+          "name": "hover_year",
+          "select": {"type": "point", "fields": ["year"], "nearest": true, "on": "pointerover", "clear": "pointerout"}
+        }
+      ],
+      "mark": {"type": "point", "filled": true, "color": "#2a78d6", "stroke": "white", "strokeWidth": 2},
+      "encoding": {
+        "size": {"condition": {"param": "hover_year", "empty": false, "value": 110}, "value": 0},
+        "tooltip": [
+          {"field": "year", "title": "Year"},
+          {"field": "enrolments", "title": "Malaysian students", "format": ","}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": {"field": "year", "oneOf": [2010, 2022, 2025]}}],
+      "mark": {"type": "point", "filled": true, "size": 70, "color": "#2a78d6", "stroke": "white", "strokeWidth": 2}
+    },
+    {
+      "transform": [
+        {"filter": {"field": "year", "oneOf": [2010, 2022, 2025]}},
+        {
+          "calculate": "datum.year == 2010 ? ['Peak: ' + format(datum.enrolments, ','), 'students in 2010'] : datum.year == 2022 ? ['Lowest point after', 'COVID-19: ' + format(datum.enrolments, ',')] : [format(datum.enrolments, ',') + ' in 2025']",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "color": "#0b0b0b",
+        "lineHeight": 15,
+        "dy": {"expr": "datum.year == 2022 ? 22 : -24"},
+        "align": {"expr": "datum.year == 2025 ? 'right' : 'center'"}
+      },
+      "encoding": {"text": {"field": "note"}}
+    },
+    {
+      "data": {"values": [{"start": 2020, "end": 2021.9, "label": "Borders closed"}]},
+      "mark": {"type": "rect", "color": "#8a8983", "opacity": 0.12},
+      "encoding": {
+        "x": {"field": "start", "type": "quantitative"},
+        "x2": {"field": "end"},
+        "y": {"value": 0},
+        "y2": {"value": 300}
+      }
+    },
+    {
+      "data": {"values": [{"year": 2020.95, "label": "Borders closed"}]},
+      "mark": {"type": "text", "fontSize": 11, "color": "#52514e", "baseline": "top"},
+      "encoding": {
+        "x": {"field": "year", "type": "quantitative"},
+        "y": {"value": 6},
+        "text": {"field": "label"}
+      }
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "quantitative",
+      "scale": {"domain": [2005, 2025.6], "nice": false},
+      "axis": {"format": "d", "title": null, "tickCount": 10, "grid": false}
+    },
+    "y": {
+      "field": "enrolments",
+      "type": "quantitative",
+      "scale": {"domain": [0, 21000]},
+      "axis": {"title": "Malaysian students enrolled", "format": ",d", "tickCount": 5}
+    }
+  }
+}

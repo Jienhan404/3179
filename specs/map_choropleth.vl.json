@@ -1,0 +1,105 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Choropleth map: undergraduate satisfaction by Australian state and territory, 2025, with a dropdown to pick the area of university life.",
+  "width": "container",
+  "height": 440,
+  "projection": {"type": "conicEqualArea", "parallels": [-18, -36], "rotate": [-133, 0]},
+  "params": [
+    {
+      "name": "state_measure",
+      "value": "overall",
+      "bind": {
+        "input": "select",
+        "name": "Colour the map by: ",
+        "options": ["overall", "teaching", "support", "resources", "skills", "peer"],
+        "labels": ["Overall experience", "Teaching quality", "Student support", "Learning resources", "Skills development", "Engaging with other students"]
+      }
+    }
+  ],
+  "data": {"url": "data/state_ug_2025.csv"},
+  "transform": [
+    {"fold": ["overall", "teaching", "support", "resources", "skills", "peer"], "as": ["measure", "value"]},
+    {"filter": "datum.measure == state_measure"},
+    {"calculate": "toNumber(datum.value)", "as": "value"},
+    {
+      "lookup": "state",
+      "from": {
+        "data": {"url": "data/australia_states.geojson", "format": {"type": "json", "property": "features"}},
+        "key": "properties.state"
+      },
+      "as": "geo"
+    },
+    {
+      "lookup": "state",
+      "from": {
+        "data": {
+          "values": [
+            {"state": "WA", "label_lat": -25.5, "label_lon": 122},
+            {"state": "NT", "label_lat": -19.5, "label_lon": 133.5},
+            {"state": "SA", "label_lat": -29.5, "label_lon": 135},
+            {"state": "QLD", "label_lat": -22.5, "label_lon": 144.5},
+            {"state": "NSW", "label_lat": -32, "label_lon": 146.5},
+            {"state": "VIC", "label_lat": -37, "label_lon": 143.5},
+            {"state": "TAS", "label_lat": -42, "label_lon": 151},
+            {"state": "ACT", "label_lat": -36.3, "label_lon": 153.5}
+          ]
+        },
+        "key": "state",
+        "fields": ["label_lat", "label_lon"]
+      }
+    },
+    {"calculate": "datum.geo.properties.name", "as": "state_name"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "geoshape", "stroke": "#ffffff", "strokeWidth": 1.2},
+      "encoding": {
+        "shape": {"field": "geo", "type": "geojson"},
+        "color": {
+          "field": "value",
+          "type": "quantitative",
+          "scale": {"range": ["#cde2fb", "#86b6ef", "#3987e5", "#1c5cab", "#0d366b"], "zero": false, "nice": true},
+          "legend": {"title": "% positive", "orient": "bottom-left", "direction": "vertical", "gradientLength": 110}
+        },
+        "tooltip": [
+          {"field": "state_name", "title": "State / territory"},
+          {"field": "value", "title": "% positive", "format": ".1f"},
+          {"field": "ug_population", "title": "Undergraduates surveyed", "format": ","}
+        ]
+      }
+    },
+    {
+      "transform": [{"calculate": "[datum.state, format(datum.value, '.1f') + '%']", "as": "label"}],
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineHeight": 14,
+        "color": "#ffffff",
+        "stroke": "#ffffff",
+        "strokeWidth": 3.5,
+        "strokeOpacity": 0.85
+      },
+      "encoding": {
+        "longitude": {"field": "label_lon", "type": "quantitative"},
+        "latitude": {"field": "label_lat", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "transform": [{"calculate": "[datum.state, format(datum.value, '.1f') + '%']", "as": "label"}],
+      "mark": {
+        "type": "text",
+        "fontSize": 12,
+        "fontWeight": 600,
+        "lineHeight": 14,
+        "color": "#0b0b0b"
+      },
+      "encoding": {
+        "longitude": {"field": "label_lon", "type": "quantitative"},
+        "latitude": {"field": "label_lat", "type": "quantitative"},
+        "text": {"field": "label"}
+      }
+    }
+  ]
+}

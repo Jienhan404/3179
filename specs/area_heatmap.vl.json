@@ -1,0 +1,65 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Heatmap: 21 fields of study by seven satisfaction measures, undergraduates at universities, 2025.",
+  "width": "container",
+  "height": {"step": 25},
+  "data": {"url": "data/area_ug_2025.csv"},
+  "transform": [
+    {"filter": "datum.study_area != 'All study areas'"},
+    {"calculate": "datum.study_area == 'Tourism, hospitality, personal services, sport and recreation' ? 'Tourism, hospitality and sport' : datum.study_area", "as": "field_of_study"},
+    {"calculate": "datum.overall", "as": "overall_score"},
+    {"fold": ["overall", "teaching", "skills", "resources", "support", "peer", "belonging"], "as": ["measure", "value"]},
+    {"calculate": "toNumber(datum.value)", "as": "value"},
+    {"calculate": "{'overall': 'Overall experience', 'teaching': 'Teaching quality', 'support': 'Student support', 'resources': 'Learning resources', 'skills': 'Skills development', 'peer': 'Engaging with other students', 'belonging': 'Sense of belonging'}[datum.measure]", "as": "area"}
+  ],
+  "encoding": {
+    "y": {
+      "field": "field_of_study",
+      "type": "nominal",
+      "sort": {"field": "overall_score", "op": "max", "order": "descending"},
+      "axis": {"title": null, "ticks": false, "domain": false, "labelLimit": 250, "labelFontSize": 12}
+    },
+    "x": {
+      "field": "area",
+      "type": "nominal",
+      "sort": ["Overall experience", "Teaching quality", "Skills development", "Learning resources", "Student support", "Engaging with other students", "Sense of belonging"],
+      "axis": {
+        "title": null,
+        "orient": "top",
+        "ticks": false,
+        "domain": false,
+        "labelAngle": 0,
+        "labelFontSize": 12,
+        "labelFontWeight": 600,
+        "labelLimit": 120,
+        "labelPadding": 6,
+        "labelExpr": "{'Overall experience': 'Overall', 'Teaching quality': 'Teaching', 'Skills development': 'Skills', 'Learning resources': 'Resources', 'Student support': 'Support', 'Engaging with other students': 'Classmates', 'Sense of belonging': 'Belonging'}[datum.label]"
+      }
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "rect", "stroke": "#ffffff", "strokeWidth": 2},
+      "encoding": {
+        "color": {
+          "field": "value",
+          "type": "quantitative",
+          "scale": {"domain": [40, 90], "range": ["#eef4fd", "#86b6ef", "#2a78d6", "#0d366b"], "clamp": true},
+          "legend": {"title": "% positive", "orient": "right", "gradientLength": 160}
+        },
+        "tooltip": [
+          {"field": "study_area", "title": "Field of study"},
+          {"field": "area", "title": "Measure"},
+          {"field": "value", "title": "% positive", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "fontSize": 11.5},
+      "encoding": {
+        "text": {"field": "value", "format": ".0f"},
+        "color": {"condition": {"test": "datum.value >= 70", "value": "#ffffff"}, "value": "#0b0b0b"}
+      }
+    }
+  ]
+}

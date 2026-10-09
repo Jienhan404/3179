@@ -1,0 +1,64 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Dumbbell chart comparing groups of students on the six satisfaction scores, with a dropdown to choose which groups to compare.",
+  "width": "container",
+  "height": {"step": 46},
+  "params": [
+    {
+      "name": "group_pick",
+      "value": "International",
+      "bind": {
+        "input": "select",
+        "name": "Compare students by: ",
+        "options": ["International", "Stage of studies", "Study mode", "Age group", "Gender", "Home language", "First in family", "Locality", "Disability", "Socio-economic status"],
+        "labels": ["Local vs international", "First year vs later years", "On campus vs online", "Age", "Gender", "Language spoken at home", "First in family to attend university", "City vs regional", "Disability", "Family income level"]
+      }
+    }
+  ],
+  "data": {"url": "data/groups_ug_2025.csv"},
+  "transform": [
+    {"filter": "datum.group_type == group_pick"},
+    {"fold": ["overall", "teaching", "support", "resources", "skills", "peer"], "as": ["measure", "value"]},
+    {"calculate": "toNumber(datum.value)", "as": "value"},
+    {"calculate": "{'overall': 'Overall experience', 'teaching': 'Teaching quality', 'support': 'Student support', 'resources': 'Learning resources', 'skills': 'Skills development', 'peer': 'Engaging with other students', 'belonging': 'Sense of belonging'}[datum.measure]", "as": "area"}
+  ],
+  "encoding": {
+    "y": {
+      "field": "area",
+      "type": "nominal",
+      "sort": ["Overall experience", "Learning resources", "Skills development", "Teaching quality", "Student support", "Engaging with other students"],
+      "axis": {"title": null, "ticks": false, "domain": false, "labelFontSize": 13, "labelLimit": 220, "grid": true}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "rule", "color": "#b5b3ab", "strokeWidth": 4, "strokeCap": "round"},
+      "encoding": {
+        "x": {"aggregate": "min", "field": "value", "type": "quantitative", "scale": {"domain": [20, 100]}},
+        "x2": {"aggregate": "max", "field": "value"}
+      }
+    },
+    {
+      "mark": {"type": "circle", "size": 190, "opacity": 1, "stroke": "#ffffff", "strokeWidth": 2},
+      "encoding": {
+        "x": {
+          "field": "value",
+          "type": "quantitative",
+          "scale": {"domain": [20, 100]},
+          "axis": {"title": "% of students who rated it positively", "tickCount": 8}
+        },
+        "color": {
+          "field": "group",
+          "type": "nominal",
+          "scale": {"range": ["#2a78d6", "#eb6834", "#1baf7a", "#4a3aa7"]},
+          "legend": {"title": null, "orient": "top", "direction": "horizontal", "symbolType": "circle", "labelFontSize": 12.5}
+        },
+        "tooltip": [
+          {"field": "group", "title": "Group"},
+          {"field": "area", "title": "Area"},
+          {"field": "value", "title": "% positive", "format": ".1f"}
+        ]
+      }
+    }
+  ]
+}

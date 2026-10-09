@@ -1,0 +1,70 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Small-multiple scatterplots with trend lines: each area of university life against overall experience, one dot per university (universities with at least 1,000 undergraduates surveyed).",
+  "data": {"url": "data/uni_ug_2025.csv"},
+  "transform": [
+    {"filter": "datum.ug_population >= 1000"},
+    {"fold": ["support", "teaching", "resources", "skills", "peer"], "as": ["measure", "value"]},
+    {"calculate": "toNumber(datum.value)", "as": "value"},
+    {"calculate": "{'overall': 'Overall experience', 'teaching': 'Teaching quality', 'support': 'Student support', 'resources': 'Learning resources', 'skills': 'Skills development', 'peer': 'Engaging with other students', 'belonging': 'Sense of belonging'}[datum.measure]", "as": "area"}
+  ],
+  "facet": {
+    "column": {
+      "field": "area",
+      "type": "nominal",
+      "sort": ["Student support", "Teaching quality", "Learning resources", "Skills development", "Engaging with other students"],
+      "header": {
+        "title": "Score for this area (% positive)",
+        "titleOrient": "bottom",
+        "titleFontSize": 12,
+        "titleFontWeight": "normal",
+        "titleColor": "#52514e",
+        "labelFontSize": 11.5,
+        "labelFontWeight": 600,
+        "labelLimit": 175
+      }
+    }
+  },
+  "spacing": 14,
+  "resolve": {"scale": {"x": "independent"}},
+  "spec": {
+    "width": 168,
+    "height": 210,
+    "layer": [
+      {
+        "mark": {"type": "circle", "size": 55, "color": "#2a78d6", "opacity": 0.6, "stroke": "#ffffff", "strokeWidth": 0.8},
+        "encoding": {
+          "x": {"field": "value", "type": "quantitative", "scale": {"zero": false, "padding": 8}, "axis": {"title": null, "tickCount": 4}},
+          "y": {
+            "field": "overall",
+            "type": "quantitative",
+            "scale": {"domain": [64, 90]},
+            "axis": {"title": "Overall experience (% positive)", "tickCount": 5}
+          },
+          "tooltip": [
+            {"field": "university", "title": "University"},
+            {"field": "area", "title": "Area"},
+            {"field": "value", "title": "Area score (%)", "format": ".1f"},
+            {"field": "overall", "title": "Overall experience (%)", "format": ".1f"}
+          ]
+        }
+      },
+      {
+        "transform": [{"regression": "overall", "on": "value", "groupby": ["area"]}],
+        "mark": {"type": "line", "color": "#0b0b0b", "strokeWidth": 2},
+        "encoding": {
+          "x": {"field": "value", "type": "quantitative"},
+          "y": {"field": "overall", "type": "quantitative"}
+        }
+      },
+      {
+        "transform": [
+          {"regression": "overall", "on": "value", "groupby": ["area"], "params": true},
+          {"calculate": "'Link strength: ' + format(datum.rSquared, '.0%')", "as": "label"}
+        ],
+        "mark": {"type": "text", "align": "left", "baseline": "top", "fontSize": 12, "fontWeight": "bold", "color": "#0b0b0b"},
+        "encoding": {"x": {"value": 8}, "y": {"value": 8}, "text": {"field": "label"}}
+      }
+    ]
+  }
+}

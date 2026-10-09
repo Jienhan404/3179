@@ -1,0 +1,145 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Jittered strip plot: all 43 universities on each of the six satisfaction scores, with one chosen university highlighted.",
+  "width": "container",
+  "height": {"step": 64},
+  "params": [
+    {
+      "name": "uni_pick",
+      "value": "Monash University",
+      "bind": {
+        "input": "select",
+        "name": "Highlight a university: ",
+        "options": [
+          "Australian Catholic University",
+          "Australian University of Theology",
+          "Avondale University",
+          "Bond University",
+          "Central Queensland University",
+          "Charles Darwin University",
+          "Charles Sturt University",
+          "Curtin University",
+          "Deakin University",
+          "Edith Cowan University",
+          "Federation University Australia",
+          "Flinders University",
+          "Griffith University",
+          "James Cook University",
+          "La Trobe University",
+          "Macquarie University",
+          "Monash University",
+          "Murdoch University",
+          "Queensland University of Technology",
+          "RMIT University",
+          "Southern Cross University",
+          "Swinburne University of Technology",
+          "The Australian National University",
+          "The University of Adelaide",
+          "The University of Melbourne",
+          "The University of Notre Dame Australia",
+          "The University of Queensland",
+          "The University of South Australia",
+          "The University of Sydney",
+          "The University of Western Australia",
+          "Torrens University",
+          "University of Canberra",
+          "University of Divinity",
+          "University of New England",
+          "University of New South Wales",
+          "University of Newcastle",
+          "University of Southern Queensland",
+          "University of Tasmania",
+          "University of Technology Sydney",
+          "University of Wollongong",
+          "University of the Sunshine Coast",
+          "Victoria University",
+          "Western Sydney University"
+        ]
+      }
+    }
+  ],
+  "data": {"url": "data/uni_ug_2025.csv"},
+  "transform": [
+    {"fold": ["overall", "teaching", "support", "resources", "skills", "peer"], "as": ["measure", "value"]},
+    {"calculate": "toNumber(datum.value)", "as": "value"},
+    {"calculate": "{'overall': 'Overall experience', 'teaching': 'Teaching quality', 'support': 'Student support', 'resources': 'Learning resources', 'skills': 'Skills development', 'peer': 'Engaging with other students', 'belonging': 'Sense of belonging'}[datum.measure]", "as": "area"},
+    {"calculate": "random()", "as": "jitter"},
+    {"calculate": "datum.university == uni_pick", "as": "picked"}
+  ],
+  "encoding": {
+    "y": {
+      "field": "area",
+      "type": "nominal",
+      "sort": ["Overall experience", "Learning resources", "Skills development", "Teaching quality", "Student support", "Engaging with other students"],
+      "axis": {"title": null, "ticks": false, "domain": false, "labelFontSize": 13, "labelLimit": 220, "grid": true}
+    },
+    "x": {
+      "field": "value",
+      "type": "quantitative",
+      "scale": {"domain": [30, 100]},
+      "axis": {"title": "% of students who rated it positively", "tickCount": 8}
+    }
+  },
+  "layer": [
+    {
+      "transform": [{"filter": "!datum.picked"}],
+      "mark": {"type": "circle", "size": 70, "color": "#86b6ef", "opacity": 0.65, "stroke": "#ffffff", "strokeWidth": 0.8},
+      "encoding": {
+        "yOffset": {"field": "jitter", "type": "quantitative", "scale": {"domain": [-0.6, 1.6]}},
+        "tooltip": [
+          {"field": "university", "title": "University"},
+          {"field": "area", "title": "Area"},
+          {"field": "value", "title": "% positive", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {"aggregate": [{"op": "median", "field": "value", "as": "median"}], "groupby": ["area"]}
+      ],
+      "mark": {"type": "tick", "color": "#0b0b0b", "thickness": 2, "height": 44},
+      "encoding": {
+        "x": {"field": "median", "type": "quantitative"},
+        "tooltip": [
+          {"field": "area", "title": "Area"},
+          {"field": "median", "title": "Middle university (%)", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.picked"}],
+      "mark": {"type": "circle", "size": 190, "color": "#eb6834", "stroke": "#ffffff", "strokeWidth": 2, "opacity": 1},
+      "encoding": {
+        "tooltip": [
+          {"field": "university", "title": "University"},
+          {"field": "area", "title": "Area"},
+          {"field": "value", "title": "% positive", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "transform": [{"filter": "datum.picked"}],
+      "mark": {
+        "type": "text",
+        "dy": -17,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#ffffff",
+        "stroke": "#ffffff",
+        "strokeWidth": 3
+      },
+      "encoding": {"text": {"field": "value", "format": ".0f"}}
+    },
+    {
+      "transform": [{"filter": "datum.picked"}],
+      "mark": {
+        "type": "text",
+        "dy": -17,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#0b0b0b"
+      },
+      "encoding": {"text": {"field": "value", "format": ".0f"}}
+    }
+  ]
+}

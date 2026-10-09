@@ -1,0 +1,61 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Ranked lollipop chart of the 37 individual survey questions, coloured by the area of university life they belong to. Click the legend to isolate one area.",
+  "width": "container",
+  "height": {"step": 19},
+  "data": {"url": "data/items_ug_2025.csv"},
+  "transform": [
+    {"calculate": "datum.focus_area == 'Student Support and Services' ? 'Helpful ' + datum.item : datum.item", "as": "question"},
+    {
+      "calculate": "{'Skills Development': 'Skills development', 'Peer Engagement': 'Engaging with other students', 'Teaching Quality and Engagement': 'Teaching quality', 'Student Support and Services': 'Student support', 'Learning Resources': 'Learning resources'}[datum.focus_area]",
+      "as": "area"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "question",
+      "type": "nominal",
+      "sort": {"field": "pct_positive", "op": "max", "order": "descending"},
+      "axis": {"title": null, "ticks": false, "domain": false, "labelLimit": 380, "labelFontSize": 11.5}
+    },
+    "x": {
+      "field": "pct_positive",
+      "type": "quantitative",
+      "scale": {"domain": [0, 100]},
+      "axis": {"title": "% of students who answered positively", "tickCount": 5, "orient": "top"}
+    },
+    "color": {
+      "field": "area",
+      "type": "nominal",
+      "scale": {
+        "domain": ["Learning resources", "Skills development", "Teaching quality", "Student support", "Engaging with other students"],
+        "range": ["#2a78d6", "#1baf7a", "#eda100", "#e87ba4", "#eb6834"]
+      },
+      "legend": {"title": "Area of university life (click one to focus on it)", "titleLimit": 400, "orient": "top", "direction": "horizontal", "symbolType": "circle", "labelLimit": 220}
+    },
+    "opacity": {"condition": {"param": "area_pick", "value": 1}, "value": 0.12}
+  },
+  "layer": [
+    {
+      "mark": {"type": "rule", "strokeWidth": 2},
+      "encoding": {"x2": {"datum": 0}}
+    },
+    {
+      "params": [
+        {"name": "area_pick", "select": {"type": "point", "fields": ["area"]}, "bind": "legend"}
+      ],
+      "mark": {"type": "circle", "size": 90},
+      "encoding": {
+        "tooltip": [
+          {"field": "question", "title": "Question"},
+          {"field": "area", "title": "Area"},
+          {"field": "pct_positive", "title": "% positive", "format": ".1f"}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "align": "left", "dx": 9, "fontSize": 11, "color": "#52514e"},
+      "encoding": {"text": {"field": "pct_positive", "format": ".0f"}, "color": {"value": "#52514e"}}
+    }
+  ]
+}

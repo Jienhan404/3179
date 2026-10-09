@@ -1,0 +1,58 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Top reasons undergraduates considered leaving their course in 2025, with the 2023 figure as a reference tick.",
+  "width": "container",
+  "height": {"step": 28},
+  "data": {
+    "url": "data/leave_reasons_ug.csv",
+    "format": {"type": "csv", "parse": {"y2023": "number", "y2024": "number", "y2025": "number"}}
+  },
+  "transform": [
+    {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "y2025", "order": "descending"}]},
+    {"filter": "datum.rank <= 12"},
+    {"calculate": "datum.y2025 - datum.y2023", "as": "change"}
+  ],
+  "encoding": {
+    "y": {
+      "field": "reason",
+      "type": "nominal",
+      "sort": {"field": "y2025", "op": "max", "order": "descending"},
+      "axis": {"title": null, "ticks": false, "domain": false, "labelLimit": 240}
+    }
+  },
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 4, "height": 16},
+      "encoding": {
+        "x": {
+          "field": "y2025",
+          "type": "quantitative",
+          "scale": {"domain": [0, 50]},
+          "axis": {"title": "% of students who considered leaving and gave this reason", "tickCount": 5}
+        },
+        "color": {
+          "condition": {"test": "datum.rank <= 3", "value": "#eb6834"},
+          "value": "#f3b79f"
+        },
+        "tooltip": [
+          {"field": "reason", "title": "Reason"},
+          {"field": "y2025", "title": "2025 (%)", "format": ".1f"},
+          {"field": "y2023", "title": "2023 (%)", "format": ".1f"},
+          {"field": "change", "title": "Change (points)", "format": "+.1f"}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "tick", "color": "#0b0b0b", "thickness": 2.5, "height": 22},
+      "encoding": {"x": {"field": "y2023", "type": "quantitative"}}
+    },
+    {
+      "transform": [{"calculate": "max(datum.y2025, datum.y2023)", "as": "label_x"}],
+      "mark": {"type": "text", "align": "left", "dx": 8, "fontSize": 11.5, "color": "#52514e"},
+      "encoding": {
+        "x": {"field": "label_x", "type": "quantitative"},
+        "text": {"field": "y2025", "format": ".0f"}
+      }
+    }
+  ]
+}
