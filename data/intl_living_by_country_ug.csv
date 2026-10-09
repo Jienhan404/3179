@@ -1,0 +1,172 @@
+country,aspect,pct_positive
+Nepal,Employment while studying,91.4
+Nepal,Improving English skills,98.2
+Nepal,Work experience,85.3
+Nepal,Transport,83.1
+Nepal,Personal safety on campus,98.6
+Nepal,Personal safety off campus,93.2
+Nepal,Making friends,93.4
+Nepal,Overall living experience,95.5
+Nepal,Overall student accommodation experience,94.8
+China (excludes SARs and Taiwan),Employment while studying,76.6
+China (excludes SARs and Taiwan),Improving English skills,91.5
+China (excludes SARs and Taiwan),Work experience,76.6
+China (excludes SARs and Taiwan),Transport,70.6
+China (excludes SARs and Taiwan),Personal safety on campus,95.6
+China (excludes SARs and Taiwan),Personal safety off campus,81.6
+China (excludes SARs and Taiwan),Making friends,84.0
+China (excludes SARs and Taiwan),Overall living experience,91.9
+China (excludes SARs and Taiwan),Overall student accommodation experience,90.3
+India,Employment while studying,83.2
+India,Improving English skills,98.4
+India,Work experience,77.7
+India,Transport,82.6
+India,Personal safety on campus,98.3
+India,Personal safety off campus,91.0
+India,Making friends,86.2
+India,Overall living experience,96.2
+India,Overall student accommodation experience,91.9
+Vietnam,Employment while studying,82.3
+Vietnam,Improving English skills,96.4
+Vietnam,Work experience,77.7
+Vietnam,Transport,73.7
+Vietnam,Personal safety on campus,98.3
+Vietnam,Personal safety off campus,88.3
+Vietnam,Making friends,87.3
+Vietnam,Overall living experience,92.9
+Vietnam,Overall student accommodation experience,91.7
+Bangladesh,Employment while studying,79.7
+Bangladesh,Improving English skills,97.0
+Bangladesh,Work experience,70.2
+Bangladesh,Transport,76.3
+Bangladesh,Personal safety on campus,97.8
+Bangladesh,Personal safety off campus,90.0
+Bangladesh,Making friends,82.1
+Bangladesh,Overall living experience,91.5
+Bangladesh,Overall student accommodation experience,87.7
+Sri Lanka,Employment while studying,82.5
+Sri Lanka,Improving English skills,97.3
+Sri Lanka,Work experience,73.6
+Sri Lanka,Transport,83.8
+Sri Lanka,Personal safety on campus,97.9
+Sri Lanka,Personal safety off campus,90.5
+Sri Lanka,Making friends,84.6
+Sri Lanka,Overall living experience,92.2
+Sri Lanka,Overall student accommodation experience,92.0
+Malaysia,Employment while studying,79.3
+Malaysia,Improving English skills,95.9
+Malaysia,Work experience,71.4
+Malaysia,Transport,77.9
+Malaysia,Personal safety on campus,97.1
+Malaysia,Personal safety off campus,82.9
+Malaysia,Making friends,84.4
+Malaysia,Overall living experience,93.2
+Malaysia,Overall student accommodation experience,89.9
+Indonesia,Employment while studying,82.3
+Indonesia,Improving English skills,97.0
+Indonesia,Work experience,74.3
+Indonesia,Transport,79.2
+Indonesia,Personal safety on campus,98.6
+Indonesia,Personal safety off campus,88.8
+Indonesia,Making friends,84.6
+Indonesia,Overall living experience,95.4
+Indonesia,Overall student accommodation experience,93.1
+Hong Kong (SAR of China),Employment while studying,70.9
+Hong Kong (SAR of China),Improving English skills,93.8
+Hong Kong (SAR of China),Work experience,71.3
+Hong Kong (SAR of China),Transport,56.4
+Hong Kong (SAR of China),Personal safety on campus,97.0
+Hong Kong (SAR of China),Personal safety off campus,82.6
+Hong Kong (SAR of China),Making friends,84.8
+Hong Kong (SAR of China),Overall living experience,91.4
+Hong Kong (SAR of China),Overall student accommodation experience,87.8
+Singapore,Employment while studying,72.8
+Singapore,Improving English skills,97.1
+Singapore,Work experience,66.6
+Singapore,Transport,62.4
+Singapore,Personal safety on campus,96.9
+Singapore,Personal safety off campus,84.8
+Singapore,Making friends,86.8
+Singapore,Overall living experience,95.7
+Singapore,Overall student accommodation experience,90.0
+Philippines,Employment while studying,90.0
+Philippines,Improving English skills,98.2
+Philippines,Work experience,85.4
+Philippines,Transport,86.8
+Philippines,Personal safety on campus,98.6
+Philippines,Personal safety off campus,93.8
+Philippines,Making friends,87.5
+Philippines,Overall living experience,96.7
+Philippines,Overall student accommodation experience,93.1
+"Korea, Republic of (South)",Employment while studying,75.2
+"Korea, Republic of (South)",Improving English skills,83.3
+"Korea, Republic of (South)",Work experience,71.1
+"Korea, Republic of (South)",Transport,61.6
+"Korea, Republic of (South)",Personal safety on campus,94.8
+"Korea, Republic of (South)",Personal safety off campus,81.7
+"Korea, Republic of (South)",Making friends,75.6
+"Korea, Republic of (South)",Overall living experience,87.7
+"Korea, Republic of (South)",Overall student accommodation experience,83.6
+Thailand,Employment while studying,86.7
+Thailand,Improving English skills,97.0
+Thailand,Work experience,73.5
+Thailand,Transport,83.1
+Thailand,Personal safety on campus,98.7
+Thailand,Personal safety off campus,89.9
+Thailand,Making friends,81.9
+Thailand,Overall living experience,96.1
+Thailand,Overall student accommodation experience,92.7
+Japan,Employment while studying,74.2
+Japan,Improving English skills,88.4
+Japan,Work experience,66.7
+Japan,Transport,60.1
+Japan,Personal safety on campus,94.4
+Japan,Personal safety off campus,89.5
+Japan,Making friends,81.7
+Japan,Overall living experience,89.5
+Japan,Overall student accommodation experience,90.6
+Colombia,Employment while studying,77.4
+Colombia,Improving English skills,97.8
+Colombia,Work experience,62.6
+Colombia,Transport,84.4
+Colombia,Personal safety on campus,98.3
+Colombia,Personal safety off campus,96.7
+Colombia,Making friends,76.3
+Colombia,Overall living experience,95.0
+Colombia,Overall student accommodation experience,93.3
+Brazil,Employment while studying,76.5
+Brazil,Improving English skills,97.8
+Brazil,Work experience,66.5
+Brazil,Transport,79.3
+Brazil,Personal safety on campus,97.8
+Brazil,Personal safety off campus,96.6
+Brazil,Making friends,79.8
+Brazil,Overall living experience,93.3
+Brazil,Overall student accommodation experience,93.1
+Chile,Employment while studying,67.5
+Chile,Improving English skills,100.0
+Chile,Work experience,75.0
+Chile,Transport,74.4
+Chile,Personal safety on campus,100.0
+Chile,Personal safety off campus,100.0
+Chile,Making friends,78.6
+Chile,Overall living experience,93.2
+Chile,Overall student accommodation experience,90.9
+Mexico,Employment while studying,76.5
+Mexico,Improving English skills,94.3
+Mexico,Work experience,63.3
+Mexico,Transport,83.3
+Mexico,Personal safety on campus,97.2
+Mexico,Personal safety off campus,100.0
+Mexico,Making friends,80.6
+Mexico,Overall living experience,91.7
+Mexico,Overall student accommodation experience,86.1
+Total international,Employment while studying,82.1
+Total international,Improving English skills,96.0
+Total international,Work experience,76.6
+Total international,Transport,77.4
+Total international,Personal safety on campus,97.7
+Total international,Personal safety off campus,88.9
+Total international,Making friends,85.8
+Total international,Overall living experience,93.9
+Total international,Overall student accommodation experience,91.3
