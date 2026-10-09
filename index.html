@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Worth the flight? Student satisfaction at Australian universities</title>
+  <meta name="description" content="What 2025 survey data says about student life at Australian universities, told for Malaysian students and families.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">Student satisfaction in Australia · 2025</p>
+    <h1>Worth the flight?</h1>
+    <p class="standfirst">
+      Thousands of Malaysians pack their bags for an Australian university every year.
+      Here is what the students already there say about the teaching, the support, the campus and each other.
+    </p>
+    <div class="tiles">
+      <div class="tile">
+        <span class="tile-num">9,515</span>
+        <span class="tile-label">Malaysians studying at Australian universities and colleges in 2025</span>
+      </div>
+      <div class="tile">
+        <span class="tile-num">77%</span>
+        <span class="tile-label">of undergraduates rate their overall experience positively</span>
+      </div>
+      <div class="tile good">
+        <span class="tile-num">83%</span>
+        <span class="tile-label">are happy with learning resources, the highest-rated area</span>
+      </div>
+      <div class="tile warn">
+        <span class="tile-num">61%</span>
+        <span class="tile-label">feel engaged with other students, the lowest-rated area</span>
+      </div>
+    </div>
+    <p class="how-to-read">
+      <strong>How to read the numbers.</strong> Every year Australia asks its university students to rate their experience.
+      A score of 80% means 80 in every 100 students gave a positive answer. Unless stated, figures are for undergraduate (bachelor's degree) students in 2025.
+    </p>
+  </div>
+</header>
+
+<main>
+
+  <!-- 1 -->
+  <section class="wrap">
+    <p class="step">1 · The journey</p>
+    <h2>Fewer Malaysians go than before, and nearly half land in Victoria</h2>
+    <div class="grid two">
+      <div>
+        <p>
+          Malaysian numbers peaked at about 18,400 in 2010. They slid through the 2010s, dropped sharply when borders closed during COVID-19,
+          and have settled at roughly half the peak.
+        </p>
+        <figure>
+          <figcaption>Malaysian higher-education students in Australia, 2005–2025</figcaption>
+          <div id="malaysia_trend" class="chart"></div>
+        </figure>
+      </div>
+      <div>
+        <p>
+          Malaysia is still the tenth-largest source of international students, although China and India send far more.
+        </p>
+        <figure>
+          <figcaption>Ten largest home countries of international students, 2025</figcaption>
+          <div id="nationalities" class="chart"></div>
+        </figure>
+      </div>
+    </div>
+    <div class="grid side flow">
+      <div class="prose">
+        <h3>Where they go</h3>
+        <p>
+          Melbourne's state, Victoria, hosts 4,337 Malaysians. That is more than New South Wales, Western Australia and Queensland combined.
+        </p>
+        <p>
+          Perth and Brisbane each draw about 1,150, while the Northern Territory has just 11.
+        </p>
+        <p class="note">Thicker lines and bigger circles mean more students. Lines run from Kuala Lumpur to each state capital for illustration; they are not flight paths.</p>
+      </div>
+      <figure>
+        <figcaption>Malaysian higher-education students by Australian state, 2025</figcaption>
+        <div id="map_flow" class="chart"></div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="band">
+    <div class="wrap">
+      <p class="step">2 · The big picture</p>
+      <h2>Satisfaction has recovered from COVID-19, but two areas lag behind</h2>
+      <div class="grid side">
+        <div class="prose">
+          <p>
+            The survey groups its questions into five areas of university life, plus one question on the overall experience.
+          </p>
+          <p>
+            <strong>Strengths:</strong> learning resources, skills development and teaching quality all sit above 80%.
+          </p>
+          <p>
+            <strong>Challenges:</strong> student support is stuck near 71%, and only 61% of students feel engaged with their classmates.
+            That score fell to 45% when classes moved online in 2020 and has been climbing back since.
+          </p>
+        </div>
+        <figure>
+          <figcaption>Share of undergraduates who rated each area positively, 2017–2025</figcaption>
+          <div id="trend_focus" class="chart"></div>
+          <p class="note">The questions about engaging with other students and student support were reworded in 2023, so compare earlier years with care.</p>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="wrap">
+    <p class="step">3 · Where</p>
+    <h2>The state matters less than the university</h2>
+    <p class="lead">
+      State averages for overall experience sit within about five points of each other. Individual universities are spread much more widely, from 67% to 96%.
+      Use the menus to switch the maps to another area of university life.
+    </p>
+    <div class="grid two">
+      <figure>
+        <figcaption>Satisfaction by state and territory</figcaption>
+        <div id="map_choropleth" class="chart"></div>
+        <p class="note">Each state's score is the average of its universities, weighted by the number of students surveyed.</p>
+      </figure>
+      <figure>
+        <figcaption>Every university: bigger circle = more students, darker = happier</figcaption>
+        <div id="map_universities" class="chart"></div>
+        <p class="note">Hover over a circle for the university's full results. Universities are placed at their main campus.</p>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="band">
+    <div class="wrap">
+      <p class="step">4 · Compare universities</p>
+      <h2>Universities are alike on resources and far apart on student engagement</h2>
+      <p class="lead">
+        Each dot is one of 43 universities. A tight cluster means universities are much the same; a long spread means your choice of university makes a real difference.
+        Pick a university to see where it sits.
+      </p>
+      <figure>
+        <div id="uni_strip" class="chart"></div>
+        <p class="note">
+          The black line marks the middle university. Dots are spread vertically only so they do not overlap.
+          The highest scores belong to three very small colleges with a few hundred students each, so treat them with caution.
+        </p>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="wrap">
+    <p class="step">5 · Compare fields of study</p>
+    <h2>What you study shapes your experience: computing and engineering students are the least satisfied</h2>
+    <p class="lead">
+      Fields are ordered from the happiest students to the least happy. Darker cells are higher scores. Agriculture and veterinary science lead on overall experience,
+      while computing trails by more than 20 points. In every field, fewer than six in ten students feel they belong.
+    </p>
+    <figure>
+      <div id="area_heatmap" class="chart"></div>
+      <p class="note">“Classmates” is the score for engaging with other students. “Belonging” is the share of students who feel they belong at their university.</p>
+    </figure>
+  </section>
+
+  <!-- 6 -->
+  <section class="band">
+    <div class="wrap">
+      <p class="step">6 · Strengths and challenges</p>
+      <h2>Great buildings and libraries, but few friendships beyond the classroom</h2>
+      <p class="lead">
+        These are the 37 individual questions behind the five areas, ranked from best to worst.
+        Facilities fill the top of the list. The bottom is about people: getting useful feedback from teachers, finding financial advice, and mixing with other students outside class.
+      </p>
+      <figure>
+        <div id="items_lollipop" class="chart"></div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section class="wrap">
+    <p class="step">7 · What students value most</p>
+    <h2>Support and teaching decide whether students are happy overall</h2>
+    <p class="lead">
+      If an area truly matters to students, universities that do well on it should also have happier students overall.
+      Each panel tests that for one area. A steep line with dots hugging it means a strong link.
+      “Link strength” runs from 0% (no link at all) to 100% (the area perfectly predicts overall happiness).
+    </p>
+    <figure>
+      <div id="drivers_scatter" class="chart scroll-x"></div>
+      <p class="note">
+        One dot per university with at least 1,000 undergraduates surveyed (40 universities). A strong link suggests what matters to students; it does not prove cause and effect.
+      </p>
+    </figure>
+    <p class="callout">
+      The weakest area nationally, engaging with other students, has almost no link with overall satisfaction.
+      Students are forgiving of a quiet social life, but not of poor teaching or missing support.
+    </p>
+  </section>
+
+  <!-- 8 -->
+  <section class="band">
+    <div class="wrap">
+      <p class="step">8 · Who is happier?</p>
+      <h2>International students rate support and classmates higher than locals do</h2>
+      <p class="lead">
+        Each row shows the gap between groups of students; the longer the bar between dots, the bigger the gap.
+        Try “First year vs later years” to see satisfaction fade after the first year.
+      </p>
+      <figure>
+        <div id="groups_dumbbell" class="chart"></div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 9 -->
+  <section class="wrap">
+    <p class="step">9 · When it goes wrong</p>
+    <h2>Stress, mental health and money are the main reasons students think about quitting</h2>
+    <div class="grid side">
+      <div class="prose">
+        <p>
+          Students who had seriously considered leaving their course were asked why. They could choose more than one reason.
+        </p>
+        <p>
+          Personal pressures top the list, well ahead of anything about the course itself.
+          The good news: the biggest reasons have all eased since 2023.
+        </p>
+        <p class="legend-line"><span class="swatch bar"></span> 2025 &nbsp; <span class="swatch tick"></span> 2023</p>
+      </div>
+      <figure>
+        <figcaption>Twelve most common reasons for considering leaving, 2025</figcaption>
+        <div id="leave_reasons" class="chart"></div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 10 -->
+  <section class="band">
+    <div class="wrap">
+      <p class="step">10 · The Malaysian view</p>
+      <h2>Malaysians come for safety and reputation, and most enjoy living there</h2>
+      <div class="grid side">
+        <div class="prose">
+          <h3>Why they chose Australia</h3>
+          <p>
+            Safety, living costs and the reputation of Australian education matter to almost every Malaysian student.
+          </p>
+          <p>
+            Having friends or family already in Australia matters to fewer than half, far less than for other international students.
+          </p>
+        </div>
+        <figure>
+          <figcaption>What was important when choosing Australia</figcaption>
+          <div id="malaysia_reasons" class="chart"></div>
+        </figure>
+      </div>
+      <div class="grid side gap-top">
+        <div class="prose">
+          <h3>How they find life there</h3>
+          <p>
+            93% of Malaysian students rate living in Australia positively.
+          </p>
+          <p>
+            They are a little less happy than other nationalities with safety off campus and with finding work experience.
+          </p>
+          <p class="note">Countries are ordered by overall living experience. Malaysia is outlined in orange.</p>
+        </div>
+        <figure>
+          <figcaption>Satisfaction with life in Australia, by home country</figcaption>
+          <div id="living_heatmap" class="chart"></div>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Takeaways -->
+  <section class="wrap takeaways">
+    <p class="step">In short</p>
+    <h2>Three things to remember before you apply</h2>
+    <div class="grid three">
+      <div class="card">
+        <span class="card-num">1</span>
+        <h3>Look past the city</h3>
+        <p>States score almost the same. The gap between individual universities, and between fields of study, is far bigger.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">2</span>
+        <h3>Ask about teaching and support</h3>
+        <p>These two areas go hand in hand with overall happiness. Shiny facilities are good almost everywhere, so they tell you little.</p>
+      </div>
+      <div class="card">
+        <span class="card-num">3</span>
+        <h3>Plan your social life and your budget</h3>
+        <p>Making friends outside class is the weakest part of student life, and stress and money are the top reasons students think of leaving.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <h3>Data sources</h3>
+    <ul>
+      <li>
+        Quality Indicators for Learning and Teaching (QILT), <em>2025 Student Experience Survey: National Report Tables and International Report Tables</em>,
+        Social Research Centre for the Australian Government Department of Education.
+        <a href="https://www.qilt.edu.au/surveys/student-experience-survey-(ses)">qilt.edu.au/surveys/student-experience-survey-(ses)</a>
+      </li>
+      <li>
+        Australian Government Department of Education, <em>International Student Data</em> (year to date, December 2025).
+        <a href="https://www.education.gov.au/international-education-data-and-research/international-student-data">education.gov.au/international-education-data-and-research/international-student-data</a>
+      </li>
+      <li>
+        Map boundaries: Natural Earth (public domain).
+        <a href="https://www.naturalearthdata.com/">naturalearthdata.com</a>
+      </li>
+    </ul>
+    <p>
+      Charts built with <a href="https://vega.github.io/vega-lite/">Vega-Lite</a>. The specification for every chart is in the
+      <code>specs</code> folder of this page's GitHub repository, and the data is in the <code>data</code> folder.
+    </p>
+    <p>
+      AI acknowledgement: Claude (Anthropic) was used to help prepare the data files, write the Vega-Lite specifications and page code, and draft the text.
+    </p>
+    <p class="byline">Goh Jien Han · FIT3179 Data Visualisation 2 · October 2026</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
