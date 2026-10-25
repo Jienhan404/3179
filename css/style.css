@@ -155,10 +155,6 @@ figcaption {
   font-weight: 500;
 }
 
-.legend-line { font-size: 13.5px; color: var(--ink-2); }
-.swatch { display: inline-block; vertical-align: middle; margin-right: 4px; }
-.swatch.bar { width: 22px; height: 12px; border-radius: 0 4px 4px 0; background: var(--orange); }
-.swatch.tick { width: 3px; height: 18px; background: var(--ink); margin-left: 8px; }
 
 /* ---------- Charts ---------- */
 .chart { width: 100%; }
@@ -167,7 +163,6 @@ figcaption {
   flex-direction: column-reverse; /* controls sit above the chart */
   width: 100%;
 }
-.chart.scroll-x { overflow-x: auto; }
 .vega-embed .vega-bindings {
   margin-bottom: 10px;
   font-size: 14px;

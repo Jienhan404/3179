@@ -28,17 +28,17 @@ Then visit http://localhost:8000. On GitHub Pages the page is served from the re
 | # | Spec | Idiom |
 |---|---|---|
 | 1 | `malaysia_trend` | Annotated area chart |
-| 2 | `nationalities` | Ranked bar chart with highlight |
+| 2 | `nationalities` | Waffle chart with Malaysia highlighted |
 | 3 | `map_flow` | **Map: flow map** (Kuala Lumpur to each state) |
 | 4 | `trend_focus` | Annotated multi-line chart with direct labels |
 | 5 | `map_choropleth` | **Map: choropleth** by state, with a measure selector |
 | 6 | `map_universities` | **Map: proportional symbol map** of universities |
-| 7 | `uni_strip` | Jittered strip plot with a university highlighter |
+| 7 | `uni_strip` | Box plot with jittered dots and a university highlighter |
 | 8 | `area_heatmap` | Heatmap, field of study by measure |
 | 9 | `items_lollipop` | Ranked lollipop chart with a clickable legend |
-| 10 | `drivers_scatter` | Small-multiple scatterplots with trend lines |
+| 10 | `drivers_scatter` | Small-multiple scatterplots with trend lines (3 + 2 grid) |
 | 11 | `groups_dumbbell` | Dumbbell chart with a group selector |
-| 12 | `leave_reasons` | Bar chart with reference ticks (2025 vs 2023) |
+| 12 | `leave_reasons` | Slope chart, 2023 to 2025 |
 | 13 | `malaysia_reasons` | Dumbbell chart, Malaysia vs all international students |
 | 14 | `living_heatmap` | Heatmap, home country by aspect of living |
 

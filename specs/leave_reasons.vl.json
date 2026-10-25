@@ -1,57 +1,73 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Top reasons undergraduates considered leaving their course in 2025, with the 2023 figure as a reference tick.",
+  "description": "Slope chart: the eight most common reasons undergraduates considered leaving their course, 2023 against 2025.",
   "width": "container",
-  "height": {"step": 28},
+  "height": 380,
   "data": {
     "url": "data/leave_reasons_ug.csv",
     "format": {"type": "csv", "parse": {"y2023": "number", "y2024": "number", "y2025": "number"}}
   },
   "transform": [
     {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "y2025", "order": "descending"}]},
-    {"filter": "datum.rank <= 12"},
-    {"calculate": "datum.y2025 - datum.y2023", "as": "change"}
+    {"filter": "datum.rank <= 8"},
+    {"calculate": "datum.y2025 - datum.y2023", "as": "change"},
+    {"fold": ["y2023", "y2025"], "as": ["key", "value"]},
+    {"calculate": "toNumber(substring(datum.key, 1))", "as": "year"},
+    {"calculate": "datum.rank <= 3", "as": "top"}
   ],
   "encoding": {
+    "x": {
+      "field": "year",
+      "type": "quantitative",
+      "scale": {"domain": [2022.7, 2027.7]},
+      "axis": {"title": null, "values": [2023, 2025], "format": "d", "grid": false, "domain": false, "ticks": false, "labelFontSize": 13, "labelFontWeight": 600, "orient": "top"}
+    },
     "y": {
-      "field": "reason",
-      "type": "nominal",
-      "sort": {"field": "y2025", "op": "max", "order": "descending"},
-      "axis": {"title": null, "ticks": false, "domain": false, "labelLimit": 240}
-    }
+      "field": "value",
+      "type": "quantitative",
+      "scale": {"domain": [20, 47]},
+      "axis": null
+    },
+    "detail": {"field": "reason"}
   },
   "layer": [
     {
-      "mark": {"type": "bar", "cornerRadiusEnd": 4, "height": 16},
+      "mark": {"type": "line", "strokeWidth": 2.5},
       "encoding": {
-        "x": {
-          "field": "y2025",
-          "type": "quantitative",
-          "scale": {"domain": [0, 50]},
-          "axis": {"title": "% of students who considered leaving and gave this reason", "tickCount": 5}
-        },
-        "color": {
-          "condition": {"test": "datum.rank <= 3", "value": "#eb6834"},
-          "value": "#f3b79f"
-        },
+        "color": {"condition": {"test": "datum.top", "value": "#eb6834"}, "value": "#c9c7c0"},
+        "order": {"field": "year"}
+      }
+    },
+    {
+      "mark": {"type": "circle", "size": 70, "opacity": 1, "stroke": "#ffffff", "strokeWidth": 1.5},
+      "encoding": {
+        "color": {"condition": {"test": "datum.top", "value": "#eb6834"}, "value": "#a9a7a0"},
         "tooltip": [
           {"field": "reason", "title": "Reason"},
-          {"field": "y2025", "title": "2025 (%)", "format": ".1f"},
-          {"field": "y2023", "title": "2023 (%)", "format": ".1f"},
-          {"field": "change", "title": "Change (points)", "format": "+.1f"}
+          {"field": "year", "title": "Year", "format": "d"},
+          {"field": "value", "title": "% of students", "format": ".1f"},
+          {"field": "change", "title": "Change 2023 to 2025 (points)", "format": "+.1f"}
         ]
       }
     },
     {
-      "mark": {"type": "tick", "color": "#0b0b0b", "thickness": 2.5, "height": 22},
-      "encoding": {"x": {"field": "y2023", "type": "quantitative"}}
+      "transform": [{"filter": "datum.year == 2023"}],
+      "mark": {"type": "text", "align": "right", "dx": -10, "fontSize": 11.5, "color": "#52514e"},
+      "encoding": {
+        "text": {"field": "value", "format": ".0f"},
+        "yOffset": {"condition": {"test": "datum.reason == 'Course expectations not met'", "value": 5}, "value": 0}
+      }
     },
     {
-      "transform": [{"calculate": "max(datum.y2025, datum.y2023)", "as": "label_x"}],
-      "mark": {"type": "text", "align": "left", "dx": 8, "fontSize": 11.5, "color": "#52514e"},
+      "transform": [
+        {"filter": "datum.year == 2025"},
+        {"calculate": "format(datum.value, '.0f') + '  ' + datum.reason", "as": "label"}
+      ],
+      "mark": {"type": "text", "align": "left", "dx": 10, "fontSize": 11.5},
       "encoding": {
-        "x": {"field": "label_x", "type": "quantitative"},
-        "text": {"field": "y2025", "format": ".0f"}
+        "text": {"field": "label"},
+        "color": {"condition": {"test": "datum.top", "value": "#0b0b0b"}, "value": "#52514e"},
+        "fontWeight": {"condition": {"test": "datum.top", "value": "bold"}, "value": "normal"}
       }
     }
   ]
